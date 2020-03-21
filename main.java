@@ -84,33 +84,53 @@ public class main {
 			rama.setValor(a);
 			if(temp == null){
 				arbol = rama;
-				System.out.println("centro");
 			}
 			else{
-				if(temp.getValor().getKey().compareTo(llave) < 0){
-					if(arbol.getDerecha()==null){
-						temp.addDerecha(rama);
-						System.out.println("der");
+				boolean bandera = true;
+				while(temp != null && bandera){
+					if(temp.getValor().getKey().compareTo(llave) < 0){
+						if(temp.getDerecha() == null)
+						{
+							temp.addDerecha(rama);
+							bandera = false;
+						}
+						else
+							temp = temp.getDerecha();
 					}
-					else if(arbol.getDerecha()!=null){
-						temp = temp.getDerecha();
-						System.out.println("no der");
-					}
-				}
-				else{
-					if(arbol.getIzquierda()==null){
-						temp.addIzquierda(rama);
-						System.out.println("izq");
-					}
-					else if(arbol.getIzquierda()!=null){
-						temp = temp.getIzquierda();
-						System.out.println("no izq");
+					else{
+						if(temp.getIzquierda() == null)
+						{
+							temp.addIzquierda(rama);
+							bandera = false;
+						}
+						else
+							temp = temp.getIzquierda();
 					}
 				}
 			}
 		}
-		System.out.println("valor "+ arbol.getValor());
+		
+		//traductor 
+		String textEspanol = ""; 
+		boolean encontroPalabra = true; 
+		for(int i = 0; i<ingles.length; i++){
+			String word = ingles[i];
+			//agarra la llave de cada hoja
+			for(int j = 0; j<diccionario.length; j++){
+				String wordD = diccionario[j].substring(1,diccionario[j].indexOf(','));
+				String traduccion = diccionario[j].substring(diccionario[j].indexOf(',')+1, diccionario[j].length()-1);
+				if(word.equalsIgnoreCase(wordD)) {
+					textEspanol = textEspanol + " " + traduccion; 
+					encontroPalabra = true;
+					j = diccionario.length;
+				}
+				else encontroPalabra = false; 
+			}
+			if(encontroPalabra == false) textEspanol = textEspanol +" *"+word+"* "; 
+		}
+		
 		System.out.println("Diccionario inorder: "+ arbol.inOrder(arbol));
+		System.out.println("Traduccion: "+textEspanol);
 	}
 }
 
